@@ -85,3 +85,20 @@ And of course close to my own heart you could also import libraries with
 logging in a microcontroller or other super-restricted context and don't worry
 about the overhead. You could of course even write the messages out over
 serial, or just blink a coloured LED based on severity.
+
+## Improvements
+To improve this proof of concept it should move away from creating type paths
+manually and instead use something like `macros.signatureHash`. All the body
+generation logic should also be moved into the registration macro, this makes
+it possible to write other registration macros which does other things than
+adding a procedure call.
+
+Another improvement would be to implement generics and define a
+`LogMessage[module: static[string]]` type and a companying
+`log(severity: Severity, message: string)` template. The template would grab
+the  current module and create a message of the correct type and log with that.
+The module could then get away without having a separate loggingtypes file if
+it only wants to log strings. And the user would then be able to register a
+callback for every `LogMessage` regardless of module, or it could register them
+for a specific module. In essence this would make the simple case of just
+logging strings much easier.
